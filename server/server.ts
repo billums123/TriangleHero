@@ -10,11 +10,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // serve static files
-// app.use(express.static(path.resolve("./frontend/dist/assets")));
+app.use(express.static(path.resolve("../web/dist/assets")));
 
-// app.get("*", (req, res): void => {
-//   res.status(200).sendFile(path.resolve("./frontend/dist/index.html"));
-// });
+app.get("*", (req, res): void => {
+  res.status(200).sendFile(path.resolve("../web/dist/index.html"));
+});
 
 // catch all 404
 app.use("*", (req, res) => {
