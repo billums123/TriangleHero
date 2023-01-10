@@ -1,5 +1,5 @@
 .triangle-form {
-  padding: 3%;
+  padding: 5%;
   flex: 1;
   height: 100%;
   width: 100%;
@@ -21,6 +21,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 5% 5%;
+  margin-top: 5%;
   background-color: red;
 }
