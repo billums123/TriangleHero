@@ -34,7 +34,11 @@ const CreateTriangleForm = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     //restrict side length to value 6 characters long
-    if (e.target.value.length <= 6) {
+    console.log(triangleSideLengths.sideA);
+    if (
+      e.target.value.length <= 6 &&
+      (parseInt(e.target.value) >= 0 || e.target.value === "")
+    ) {
       setTriangleSideLengths({
         ...triangleSideLengths,
         [e.target.name]: e.target.value,

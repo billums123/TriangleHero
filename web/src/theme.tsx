@@ -22,13 +22,13 @@ const theme = createTheme({
       main: "#242424",
       // light: "#BFC0C0",
       // dark: "#242734",
-      contrastText: "#fff",
+      contrastText: "#ffffffde",
     },
     secondary: {
-      main: "#EF8354",
+      main: "#ffffffde",
       light: "#f29b76",
       dark: "#e95818",
-      contrastText: "#fff",
+      contrastText: "#242424",
     },
     error: {
       main: red.A400,
