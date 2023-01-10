@@ -41,7 +41,16 @@ const CreateTriangleForm = () => {
           onChange={handleUpdateTriangleSideLength}
         ></TextField>
       </Box>
-      <Button variant="contained">Create a Triangle</Button>
+      <Button
+        disabled={
+          !triangleSideLengths.sideA ||
+          !triangleSideLengths.sideB ||
+          !triangleSideLengths.sideC
+        }
+        variant="contained"
+      >
+        Create Triangle
+      </Button>
       <Box className="image-display">Image</Box>
     </Box>
   );
