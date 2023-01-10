@@ -1,24 +1,47 @@
 import React, { useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { TriangleSideLengths } from "../types";
+import { TriangleSideLengths, TriangleSideLengthsErrors } from "../types";
 import "../stylesheets/create-triangle-form.css";
+
+// const triangleSidesTextFieldData = [
+//   {
+//     name: "sideA",
+//     label: "side A",
+//   },
+//   {
+//     name: "sideB",
+//     label: "side B",
+//   },
+//   {
+//     name: "sideC",
+//     label: "side C",
+//   },
+// ];
 
 const CreateTriangleForm = () => {
   const [triangleSideLengths, setTriangleSideLengths] =
     useState<TriangleSideLengths>({
-      sideA: null,
-      sideB: null,
-      sideC: null,
+      sideA: "",
+      sideB: "",
+      sideC: "",
     });
+  const [formErrors, setFormErrors] = useState<TriangleSideLengthsErrors>({
+    sideA: false,
+    sideB: false,
+    sideC: false,
+  });
   const handleUpdateTriangleSideLength = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    setTriangleSideLengths({
-      ...triangleSideLengths,
-      [e.target.name]: e.target.value,
-    });
+    //restrict side length to value 6 characters long
+    if (e.target.value.length <= 6) {
+      setTriangleSideLengths({
+        ...triangleSideLengths,
+        [e.target.name]: e.target.value,
+      });
+    }
   };
-  console.log("state", triangleSideLengths);
+  console.log("state", triangleSideLengths.sideA);
   return (
     <Box className="triangle-form">
       <Typography>
@@ -26,18 +49,26 @@ const CreateTriangleForm = () => {
       </Typography>
       <Box className="text-fields">
         <TextField
+          // error
+          // helperText="Wrong"
+          value={triangleSideLengths.sideA}
           name="sideA"
           label="Side A"
+          type={"number"}
           onChange={handleUpdateTriangleSideLength}
         ></TextField>
         <TextField
+          value={triangleSideLengths.sideB}
           name="sideB"
           label="Side B"
+          type={"number"}
           onChange={handleUpdateTriangleSideLength}
         ></TextField>
         <TextField
+          value={triangleSideLengths.sideC}
           name="sideC"
           label="Side C"
+          type={"number"}
           onChange={handleUpdateTriangleSideLength}
         ></TextField>
       </Box>
