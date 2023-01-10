@@ -1,0 +1,46 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true,
+    "jest": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "plugin:import/typescript",
+    "plugin:promise/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "airbnb",
+    "airbnb-typescript",
+    "prettier"
+  ],
+  "overrides": [],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "script",
+    "project": "./tsconfig.json"
+  },
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "eslint-plugin-tsdoc",
+    "promise",
+    "import",
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": 2,
+    "n/no-missing-import": 0,
+    "n/no-unsupported-features/es-syntax": 0,
+    "no-console": 0,
+    "prefer-object-spread": 0,
+    "arrow-body-style": 0,
+    "import/no-import-module-exports": 0,
+    "promise/always-return": 0,
+    "no-nested-ternary": 0,
+    "tsdoc/syntax": "warn"
+  }
+}
