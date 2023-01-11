@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Box, Table, TableRow, TableCell, Typography } from "@mui/material";
+import {
+  Box,
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  Typography,
+} from "@mui/material";
 import "../stylesheets/triangle-stats-container.css";
 import theme from "../theme";
 import {
@@ -54,21 +61,24 @@ const TriangleStatsContainer = ({
       });
     }
   }, [validTriangle]);
-  console.log("STATS", triangleStats);
   const triangleTypeRows = Object.keys(triangleStats)
     .filter((key) => key !== "angles")
     .map((key) => (
-      <TableRow>
-        <TableCell>{triangleTypeLabels[key]}</TableCell>
+      <TableRow key={triangleTypeLabels[key]}>
+        <TableCell key={triangleTypeLabels[key]}>
+          {triangleTypeLabels[key]}
+        </TableCell>
         <TableCell>
           <strong>{triangleStats[key]}</strong>
         </TableCell>
       </TableRow>
     ));
   const triangleAnglesRows = Object.keys(triangleStats.angles).map((key) => (
-    <TableRow>
-      <TableCell>{triangleAnglesLabels[key]}</TableCell>
-      <TableCell>
+    <TableRow key={triangleAnglesLabels[key]}>
+      <TableCell key={triangleAnglesLabels[key]}>
+        {triangleAnglesLabels[key]}
+      </TableCell>
+      <TableCell key={triangleAnglesLabels[key] + "1"}>
         <strong>
           {typeof triangleStats.angles[key] === "number"
             ? (triangleStats.angles[key] as number).toFixed(2) + "°"
@@ -98,8 +108,10 @@ const TriangleStatsContainer = ({
           </strong>
         </Typography>
         <Table size="small">
-          {triangleTypeRows}
-          {triangleAnglesRows}
+          <TableBody>
+            {triangleTypeRows}
+            {triangleAnglesRows}
+          </TableBody>
         </Table>
       </Box>
       <Box className="triangle-image">Triangle Image</Box>
