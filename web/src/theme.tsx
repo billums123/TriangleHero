@@ -1,4 +1,4 @@
-import { red } from "@mui/material/colors";
+import { green, red } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 import RobotoBold from "./assets/fonts/Roboto-Bold.ttf";
 
@@ -31,8 +31,7 @@ const theme = createTheme({
       contrastText: "#242424",
     },
     error: {
-      main: red.A400,
-      // main: '#DB5461',
+      main: red.A700,
     },
   },
   spacing: 4,

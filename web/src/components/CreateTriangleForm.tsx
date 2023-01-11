@@ -1,23 +1,23 @@
 import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
-import { TriangleSideLengths, TriangleSideLengthsErrors } from "../types";
+import { TriangleSideLengths, ValidateTriangleSidesResponse } from "../types";
 import "../stylesheets/create-triangle-form.css";
 import validateTriangleSides from "../utils/validateTriangleSides";
 
-// const triangleSidesTextFieldData = [
-//   {
-//     name: "sideA",
-//     label: "side A",
-//   },
-//   {
-//     name: "sideB",
-//     label: "side B",
-//   },
-//   {
-//     name: "sideC",
-//     label: "side C",
-//   },
-// ];
+const triangleSidesTextFieldData = [
+  {
+    name: "sideA",
+    label: "side A",
+  },
+  {
+    name: "sideB",
+    label: "side B",
+  },
+  {
+    name: "sideC",
+    label: "side C",
+  },
+];
 
 const CreateTriangleForm = () => {
   const [triangleSideLengths, setTriangleSideLengths] =
@@ -26,11 +26,11 @@ const CreateTriangleForm = () => {
       sideB: "",
       sideC: "",
     });
-  const [formErrors, setFormErrors] = useState<TriangleSideLengthsErrors>({
-    sideA: false,
-    sideB: false,
-    sideC: false,
-  });
+  const [validTriangle, setValidTriangle] =
+    useState<ValidateTriangleSidesResponse>({
+      isValid: null,
+      errorMessage: "",
+    });
   const handleUpdateTriangleSideLength = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -52,50 +52,44 @@ const CreateTriangleForm = () => {
         (sideLength) => sideLength.length > 0
       )
     ) {
-      console.log(validateTriangleSides(triangleSideLengths));
+      const validTriangleResponse = validateTriangleSides(triangleSideLengths);
+      setValidTriangle(validTriangleResponse);
     }
   }, [triangleSideLengths]);
+
+  const triangleSideTextFields = triangleSidesTextFieldData.map(
+    (triangleSide, i) => (
+      <TextField
+        key={triangleSide.name + i}
+        value={triangleSideLengths[triangleSide.name]}
+        name={triangleSide.name}
+        label={triangleSide.label}
+        error={!validTriangle.isValid && validTriangle.isValid !== null}
+        type={"number"}
+        onChange={handleUpdateTriangleSideLength}
+      />
+    )
+  );
   return (
     <Box className="triangle-form">
       <Typography>
         Please provide the lengths for the 3 sides of your triangle.
       </Typography>
-      <Box className="text-fields">
-        <TextField
-          // error
-          // helperText="Wrong"
-          value={triangleSideLengths.sideA}
-          name="sideA"
-          label="Side A"
-          type={"number"}
-          onChange={handleUpdateTriangleSideLength}
-        ></TextField>
-        <TextField
-          value={triangleSideLengths.sideB}
-          name="sideB"
-          label="Side B"
-          type={"number"}
-          onChange={handleUpdateTriangleSideLength}
-        ></TextField>
-        <TextField
-          value={triangleSideLengths.sideC}
-          name="sideC"
-          label="Side C"
-          type={"number"}
-          onChange={handleUpdateTriangleSideLength}
-        ></TextField>
-      </Box>
+      <Typography variant="body2" color="error">
+        {validTriangle.errorMessage}
+      </Typography>
+      <Box className="text-fields">{triangleSideTextFields}</Box>
       <Button
         disabled={
-          !triangleSideLengths.sideA ||
-          !triangleSideLengths.sideB ||
-          !triangleSideLengths.sideC
+          Object.values(triangleSideLengths).every(
+            (triangleSide) => !triangleSide.length
+          ) || !validTriangle.isValid
         }
         variant="contained"
       >
         Create Triangle
       </Button>
-      <Box className="image-display">Image</Box>
+      <Box className="image-display">Triangle Image</Box>
     </Box>
   );
 };
