@@ -63,6 +63,7 @@ const TriangleStatsContainer = ({
       <TriangleCanvas
         triangleSideLengths={triangleSideLengths}
         angles={triangleStats.angles}
+        validTriangle={validTriangle}
       />
     </Box>
   );

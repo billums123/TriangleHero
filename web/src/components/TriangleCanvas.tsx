@@ -1,31 +1,51 @@
 import { useEffect, useRef } from "react";
 import { Box } from "@mui/material";
 import "../stylesheets/triangle-canvas.css";
-import { TriangleAngles, TriangleSideLengths } from "../types";
+import {
+  TriangleAngles,
+  TriangleSideLengths,
+  ValidateTriangleSidesResponse,
+} from "../types";
+import convertTriangleAnglesToPixels from "../utils/covertTriangleAnglesToPixels";
 
 interface TriangleCanvasProps {
   triangleSideLengths: TriangleSideLengths;
   angles: TriangleAngles;
+  validTriangle: ValidateTriangleSidesResponse;
 }
 
 const TriangleCanvas = ({
   triangleSideLengths,
   angles,
+  validTriangle,
 }: TriangleCanvasProps) => {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    if (canvasRef.current) {
+    if (canvasRef.current && validTriangle.isValid) {
       const ctx = canvasRef.current.getContext("2d");
+      canvasRef.current?.getBoundingClientRect();
+      const currentCanvasWidth =
+        canvasRef.current?.getBoundingClientRect().width;
+      const currentCanvasHeight =
+        canvasRef.current?.getBoundingClientRect().height;
+      // ctx?.fillRect(25, 25, 270, 10);
+      const result = convertTriangleAnglesToPixels(
+        angles,
+        triangleSideLengths,
+        currentCanvasWidth,
+        currentCanvasHeight
+      );
       ctx?.beginPath();
-      ctx?.moveTo(75, 50);
-      ctx?.lineTo(100, 75);
-      ctx?.lineTo(100, 25);
+      ctx?.moveTo(150, 0);
+      ctx?.lineTo(0, 147);
+      ctx?.lineTo(300, 150);
+      if (ctx) {
+        ctx.fillStyle = "green";
+      }
       ctx?.fill();
     }
-  }, []);
-  console.log("width", canvasRef.current?.getBoundingClientRect());
-  console.log("height", canvasRef.current?.getBoundingClientRect());
+  }, [validTriangle]);
   return (
     <Box className="triangle-image-container">
       <canvas className="canvas" ref={canvasRef} />
