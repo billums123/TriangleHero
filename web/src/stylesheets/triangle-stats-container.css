@@ -7,16 +7,7 @@
   margin-top: 5%;
   border-radius: 20px;
 }
-.triangle-stats-list {
-  flex: 1;
-  height: 90%;
-  display: flex;
-  flex-direction: column;
-  text-align: start;
-  /* border-radius: 20px; */
-  margin-left: 2.5%;
-  overflow: auto;
-}
+
 .triangle-image {
   flex: 1;
   height: 90%;
