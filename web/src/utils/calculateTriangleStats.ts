@@ -1,4 +1,8 @@
-import { TriangleSideLengths, TriangleSideLengthsNums } from "../types";
+import {
+  TriangleSideLengths,
+  TriangleSideLengthsNums,
+  TriangleStatisticsResult,
+} from "../types";
 
 const calculateTriangleStats = (triangleSides: TriangleSideLengths) => {
   const triangleSidesNums = {
@@ -6,17 +10,19 @@ const calculateTriangleStats = (triangleSides: TriangleSideLengths) => {
     sideB: parseFloat(triangleSides.sideB),
     sideC: parseFloat(triangleSides.sideC),
   };
-  const result = {
+  const result: TriangleStatisticsResult = {
     typeBySide: "",
     typeByAngle: "",
     angles: {
-      angleA: null,
-      angleB: null,
-      angleC: null,
+      angleA: 0,
+      angleB: 0,
+      angleC: 0,
     },
   };
   result.typeBySide = findTypeBySide(triangleSidesNums);
-  findTypeByAngle(triangleSidesNums);
+  const { typeByAngle, angles } = findTypeByAngle(triangleSidesNums);
+  result.typeByAngle = typeByAngle;
+  result.angles = angles;
 
   return result;
 };
@@ -45,35 +51,50 @@ const findTypeBySide = (triangleSides: TriangleSideLengthsNums): string => {
   }
   return result;
 };
-const findTypeByAngle = (triangleSides: TriangleSideLengthsNums): string => {
+const findTypeByAngle = ({
+  sideA,
+  sideB,
+  sideC,
+}: TriangleSideLengthsNums): Omit<TriangleStatisticsResult, "typeBySide"> => {
   const typesByAngle = {
-    1: "Acute",
+    1: "Right",
     2: "Obtuse",
-    3: "Right",
+    3: "Acute",
   };
-  const angles = {
-    angleA: 0,
-    angleB: 0,
-    angleC: 0,
+  const result = {
+    typeByAngle: "",
+    angles: {
+      angleA: 0,
+      angleB: 0,
+      angleC: 0,
+    },
   };
+  result.angles.angleA = lawOfCosinesCalculator(sideA, sideB, sideC);
+  result.angles.angleB = lawOfCosinesCalculator(sideB, sideA, sideC);
+  result.angles.angleC = lawOfCosinesCalculator(sideC, sideA, sideB);
 
-  angles.angleA = Math.acos(triangleSides.sideB);
-  let result;
-  const sideLengths = Object.values(triangleSides);
-  const uniqueSideLengths = new Set(sideLengths);
-  switch (uniqueSideLengths.size) {
-    case 1:
-      result = typesByAngle[1];
-      break;
-    case 2:
-      result = typesByAngle[2];
-      break;
-    case 3:
-      result = typesByAngle[3];
-      break;
-    default:
-      result = "";
+  if (Object.values(result.angles).includes(90)) {
+    result.typeByAngle = typesByAngle[1];
+  } else if (Object.values(result.angles).some((angle) => angle > 90)) {
+    result.typeByAngle = typesByAngle[2];
+  } else {
+    result.typeByAngle = typesByAngle[3];
   }
   return result;
+};
+
+//returns values in degree from
+const lawOfCosinesCalculator = (
+  sideOppositeCalculatedAngle: number,
+  side1: number,
+  side2: number
+): number => {
+  return (
+    (180 / Math.PI) *
+    Math.acos(
+      (side1 ** 2 + side2 ** 2 - sideOppositeCalculatedAngle ** 2) /
+        (2 * side1 * side2)
+    )
+  );
 };
 export default calculateTriangleStats;
