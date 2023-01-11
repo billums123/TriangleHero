@@ -4,6 +4,12 @@ export interface TriangleSideLengths {
   sideC: string;
   [key: string]: string;
 }
+export interface TriangleSideLengthsNums {
+  sideA: number;
+  sideB: number;
+  sideC: number;
+  [key: string]: number;
+}
 export interface ValidateTriangleSidesResponse {
   isValid: boolean | null;
   errorMessage: string;

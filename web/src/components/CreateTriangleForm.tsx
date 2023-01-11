@@ -7,15 +7,15 @@ import TriangleStatsContainer from "./TriangleStatsContainer";
 const triangleSidesTextFieldData = [
   {
     name: "sideA",
-    label: "side A",
+    label: "Side A",
   },
   {
     name: "sideB",
-    label: "side B",
+    label: "Side B",
   },
   {
     name: "sideC",
-    label: "side C",
+    label: "Side C",
   },
 ];
 
@@ -64,6 +64,7 @@ const CreateTriangleForm = () => {
         error={!validTriangle.isValid && validTriangle.errorMessage.length > 0}
         type={"number"}
         onChange={handleUpdateTriangleSideLength}
+        sx={{ mt: "3%", mb: "3%" }}
       />
     )
   );
@@ -76,7 +77,10 @@ const CreateTriangleForm = () => {
         {validTriangle.errorMessage}
       </Typography>
       <Box className="text-fields">{triangleSideTextFields}</Box>
-      <TriangleStatsContainer validTriangle={validTriangle} />
+      <TriangleStatsContainer
+        validTriangle={validTriangle}
+        triangleSideLengths={triangleSideLengths}
+      />
     </Box>
   );
 };

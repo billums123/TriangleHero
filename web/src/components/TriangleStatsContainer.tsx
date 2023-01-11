@@ -1,14 +1,20 @@
 import { Box, Typography } from "@mui/material";
 import "../stylesheets/triangle-stats-container.css";
 import theme from "../theme";
-import { ValidateTriangleSidesResponse } from "../types";
+import { ValidateTriangleSidesResponse, TriangleSideLengths } from "../types";
+import calculateTriangleStats from "../utils/calculateTriangleStats";
 interface TriangleStatsContainerProps {
   validTriangle: ValidateTriangleSidesResponse;
+  triangleSideLengths: TriangleSideLengths;
 }
 
 const TriangleStatsContainer = ({
   validTriangle,
+  triangleSideLengths,
 }: TriangleStatsContainerProps) => {
+  if (validTriangle.isValid) {
+    console.log(calculateTriangleStats(triangleSideLengths));
+  }
   return (
     <Box
       className="triangle-stats-container"
