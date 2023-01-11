@@ -9,6 +9,7 @@ import {
 } from "../types";
 import calculateTriangleStats from "../utils/calculateTriangleStats";
 import TriangleStats from "./TriangleStats";
+import TriangleCanvas from "./TriangleCanvas";
 
 interface TriangleStatsContainerProps {
   validTriangle: ValidateTriangleSidesResponse;
@@ -59,7 +60,10 @@ const TriangleStatsContainer = ({
         validTriangle={validTriangle}
         triangleStats={triangleStats}
       />
-      <Box className="triangle-image">Triangle Image</Box>
+      <TriangleCanvas
+        triangleSideLengths={triangleSideLengths}
+        angles={triangleStats.angles}
+      />
     </Box>
   );
 };
