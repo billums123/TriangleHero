@@ -9,3 +9,7 @@ export interface TriangleSideLengthsErrors {
   sideB: boolean;
   sideC: boolean;
 }
+export interface ValidateTriangleSidesResponse {
+  isValid: boolean;
+  errorMessage: string;
+}

@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import { TriangleSideLengths, TriangleSideLengthsErrors } from "../types";
 import "../stylesheets/create-triangle-form.css";
+import validateTriangleSides from "../utils/validateTriangleSides";
 
 // const triangleSidesTextFieldData = [
 //   {
@@ -34,7 +35,6 @@ const CreateTriangleForm = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     //restrict side length to value 6 characters long
-    console.log(triangleSideLengths.sideA);
     if (
       e.target.value.length <= 6 &&
       (parseInt(e.target.value) >= 0 || e.target.value === "")
@@ -45,7 +45,16 @@ const CreateTriangleForm = () => {
       });
     }
   };
-  console.log("state", triangleSideLengths.sideA);
+  //validate that a proper triangle can be made once all side text fields are populated.
+  useEffect(() => {
+    if (
+      Object.values(triangleSideLengths).every(
+        (sideLength) => sideLength.length > 0
+      )
+    ) {
+      console.log(validateTriangleSides(triangleSideLengths));
+    }
+  }, [triangleSideLengths]);
   return (
     <Box className="triangle-form">
       <Typography>
