@@ -1,8 +1,16 @@
-import { Box, Typography } from "@mui/material";
+import { useEffect, useState } from "react";
+import { Box, Table, TableRow, TableCell, Typography } from "@mui/material";
 import "../stylesheets/triangle-stats-container.css";
 import theme from "../theme";
-import { ValidateTriangleSidesResponse, TriangleSideLengths } from "../types";
+import {
+  ValidateTriangleSidesResponse,
+  TriangleSideLengths,
+  TriangleStatisticsResult,
+  TriangleAngles,
+  TriangleTypesResult,
+} from "../types";
 import calculateTriangleStats from "../utils/calculateTriangleStats";
+
 interface TriangleStatsContainerProps {
   validTriangle: ValidateTriangleSidesResponse;
   triangleSideLengths: TriangleSideLengths;
@@ -12,9 +20,64 @@ const TriangleStatsContainer = ({
   validTriangle,
   triangleSideLengths,
 }: TriangleStatsContainerProps) => {
-  if (validTriangle.isValid) {
-    console.log(calculateTriangleStats(triangleSideLengths));
-  }
+  const [triangleStats, setTriangleStats] = useState<TriangleStatisticsResult>({
+    typeBySide: "--",
+    typeByAngle: "--",
+    angles: {
+      angleA: "--",
+      angleB: "--",
+      angleC: "--",
+    },
+  });
+  const triangleTypeLabels: TriangleTypesResult = {
+    typeBySide: "Type by Side",
+    typeByAngle: "Type by Angle",
+  };
+  const triangleAnglesLabels: TriangleAngles = {
+    angleA: "Angle A",
+    angleB: "Angle B",
+    angleC: "Angle C",
+  };
+
+  useEffect(() => {
+    if (validTriangle.isValid) {
+      setTriangleStats(calculateTriangleStats(triangleSideLengths));
+    } else {
+      setTriangleStats({
+        typeBySide: "--",
+        typeByAngle: "--",
+        angles: {
+          angleA: "--",
+          angleB: "--",
+          angleC: "--",
+        },
+      });
+    }
+  }, [validTriangle]);
+  console.log("STATS", triangleStats);
+  const triangleTypeRows = Object.keys(triangleStats)
+    .filter((key) => key !== "angles")
+    .map((key) => (
+      <TableRow>
+        <TableCell>{triangleTypeLabels[key]}</TableCell>
+        <TableCell>
+          <strong>{triangleStats[key]}</strong>
+        </TableCell>
+      </TableRow>
+    ));
+  const triangleAnglesRows = Object.keys(triangleStats.angles).map((key) => (
+    <TableRow>
+      <TableCell>{triangleAnglesLabels[key]}</TableCell>
+      <TableCell>
+        <strong>
+          {typeof triangleStats.angles[key] === "number"
+            ? (triangleStats.angles[key] as number).toFixed(2) + "°"
+            : triangleStats.angles[key]}
+        </strong>
+      </TableCell>
+    </TableRow>
+  ));
+
   return (
     <Box
       className="triangle-stats-container"
@@ -34,6 +97,10 @@ const TriangleStatsContainer = ({
             {validTriangle.isValid ? "Valid Triangle" : "Invalid Triangle"}
           </strong>
         </Typography>
+        <Table size="small">
+          {triangleTypeRows}
+          {triangleAnglesRows}
+        </Table>
       </Box>
       <Box className="triangle-image">Triangle Image</Box>
     </Box>
