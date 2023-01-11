@@ -8,7 +8,13 @@ const validateTriangleSides = ({
   let response = {
     isValid: true,
     errorMessage: "",
+    noEmptyFields: true,
   };
+  if (!sideA.length || !sideB.length || !sideC.length) {
+    response.isValid = false;
+    response.noEmptyFields = false;
+    return response;
+  }
   const sideA_num = parseFloat(sideA);
   const sideB_num = parseFloat(sideB);
   const sideC_num = parseFloat(sideC);

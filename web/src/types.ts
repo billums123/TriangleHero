@@ -7,4 +7,5 @@ export interface TriangleSideLengths {
 export interface ValidateTriangleSidesResponse {
   isValid: boolean | null;
   errorMessage: string;
+  noEmptyFields: boolean;
 }

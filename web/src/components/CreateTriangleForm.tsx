@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Box, Button, TextField, Typography } from "@mui/material";
+import { Box, TextField, Typography } from "@mui/material";
 import { TriangleSideLengths, ValidateTriangleSidesResponse } from "../types";
 import "../stylesheets/create-triangle-form.css";
 import validateTriangleSides from "../utils/validateTriangleSides";
-
+import TriangleStatsContainer from "./TriangleStatsContainer";
 const triangleSidesTextFieldData = [
   {
     name: "sideA",
@@ -28,8 +28,9 @@ const CreateTriangleForm = () => {
     });
   const [validTriangle, setValidTriangle] =
     useState<ValidateTriangleSidesResponse>({
-      isValid: null,
+      isValid: false,
       errorMessage: "",
+      noEmptyFields: false,
     });
   const handleUpdateTriangleSideLength = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -47,11 +48,7 @@ const CreateTriangleForm = () => {
   };
   //validate that a proper triangle can be made once all side text fields are populated.
   useEffect(() => {
-    if (
-      Object.values(triangleSideLengths).every(
-        (sideLength) => sideLength.length > 0
-      )
-    ) {
+    {
       const validTriangleResponse = validateTriangleSides(triangleSideLengths);
       setValidTriangle(validTriangleResponse);
     }
@@ -64,7 +61,7 @@ const CreateTriangleForm = () => {
         value={triangleSideLengths[triangleSide.name]}
         name={triangleSide.name}
         label={triangleSide.label}
-        error={!validTriangle.isValid && validTriangle.isValid !== null}
+        error={!validTriangle.isValid && validTriangle.errorMessage.length > 0}
         type={"number"}
         onChange={handleUpdateTriangleSideLength}
       />
@@ -79,17 +76,7 @@ const CreateTriangleForm = () => {
         {validTriangle.errorMessage}
       </Typography>
       <Box className="text-fields">{triangleSideTextFields}</Box>
-      <Button
-        disabled={
-          Object.values(triangleSideLengths).every(
-            (triangleSide) => !triangleSide.length
-          ) || !validTriangle.isValid
-        }
-        variant="contained"
-      >
-        Create Triangle
-      </Button>
-      <Box className="image-display">Triangle Image</Box>
+      <TriangleStatsContainer validTriangle={validTriangle} />
     </Box>
   );
 };
