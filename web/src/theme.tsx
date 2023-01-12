@@ -1,4 +1,4 @@
-import { red } from "@mui/material/colors";
+import { green, red } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
 import RobotoBold from "./assets/fonts/Roboto-Bold.ttf";
 
@@ -22,17 +22,16 @@ const theme = createTheme({
       main: "#242424",
       // light: "#BFC0C0",
       // dark: "#242734",
-      contrastText: "#fff",
+      contrastText: "#ffffffde",
     },
     secondary: {
-      main: "#EF8354",
-      light: "#f29b76",
-      dark: "#e95818",
-      contrastText: "#fff",
+      main: "#ffffffde",
+      // light: "#f29b76",
+      // dark: "#e95818",
+      contrastText: "#242424",
     },
     error: {
-      main: red.A400,
-      // main: '#DB5461',
+      main: red.A700,
     },
   },
   spacing: 4,

@@ -1,0 +1,15 @@
+.triangle-image-container {
+  flex: 1;
+  height: 90%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 2.5%;
+  overflow: auto;
+  border-radius: 20px;
+  background-color: lightgray;
+}
+.canvas {
+  overflow-y: auto;
+  background-color: blue;
+}

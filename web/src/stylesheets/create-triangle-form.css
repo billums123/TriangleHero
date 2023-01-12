@@ -1,0 +1,16 @@
+.triangle-form {
+  padding: 3%;
+  flex: 1;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.text-fields {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  margin: 2% 2%;
+}
