@@ -33,5 +33,5 @@ export interface TriangleTypesResult
 
 export interface TriangleVertices {
   name: string;
-  position: [number, number] | [];
+  position: [number, number];
 }

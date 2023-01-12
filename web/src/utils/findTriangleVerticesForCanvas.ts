@@ -8,10 +8,9 @@ import {
 const findTriangleVerticesForCanvas = (
   angles: TriangleAngles,
   triangleSides: TriangleSideLengths,
-  canvasWidth: number,
   canvasHeight: number
 ) => {
-  const sideLengthsInPixels = scaleSidesToPixels(triangleSides, canvasWidth);
+  const sideLengthsInPixels = scaleSidesToPixels(triangleSides, canvasHeight);
   const verticesNameAndPos = calculateTriangleVertices(
     sideLengthsInPixels,
     angles
@@ -21,12 +20,12 @@ const findTriangleVerticesForCanvas = (
 
 const scaleSidesToPixels = (
   triangleSides: TriangleSideLengths,
-  canvasWidth: number
+  canvasHeight: number
 ) => {
   const maxSideLength = Math.max(
     ...Object.values(triangleSides).map((side) => parseFloat(side))
   );
-  const scalingFactor = (canvasWidth - 10) / maxSideLength;
+  const scalingFactor = canvasHeight / maxSideLength;
   const scaledSides: TriangleSideLengthsNums = {
     sideA: 0,
     sideB: 0,
@@ -98,5 +97,21 @@ const calculateThirdVertexPosition = (
     sideForCalculations[1] *
     Math.cos((angleAtSecondVertex as number) * (Math.PI / 180));
   return [xCoord, yCoord];
+};
+
+const findTriangleCentroid = (
+  vertices: TriangleVertices[]
+): [xCentroid: number, yCentroid: number] => {
+  let xSum = 0;
+  let ySum = 0;
+  let xCentroid = 0;
+  let yCentroid = 0;
+  for (let i = 0; i < vertices.length; i++) {
+    xSum += vertices[i].position[0];
+    ySum += vertices[i].position[1];
+  }
+  xCentroid = xSum / vertices.length;
+  yCentroid = ySum / vertices.length;
+  return [xCentroid, yCentroid];
 };
 export default findTriangleVerticesForCanvas;

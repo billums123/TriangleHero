@@ -33,7 +33,6 @@ const TriangleCanvas = ({
       const [vertexOne, vertexTwo, vertexThree] = findTriangleVerticesForCanvas(
         angles,
         triangleSideLengths,
-        currentCanvasWidth,
         currentCanvasHeight
       );
       console.log("result", vertexOne, vertexTwo, vertexThree);
