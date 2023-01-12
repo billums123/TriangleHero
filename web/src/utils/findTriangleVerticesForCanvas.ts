@@ -8,12 +8,22 @@ import {
 const findTriangleVerticesForCanvas = (
   angles: TriangleAngles,
   triangleSides: TriangleSideLengths,
-  canvasHeight: number
+  canvasHeight: number,
+  canvasWidth: number
 ) => {
   const sideLengthsInPixels = scaleSidesToPixels(triangleSides, canvasHeight);
   const verticesNameAndPos = calculateTriangleVertices(
     sideLengthsInPixels,
     angles
+  );
+  const [xCentroid, yCentroid] = findTriangleCentroid(verticesNameAndPos);
+  //side effect function, updates positions of vertices on verticesNameAndPos object
+  centerTriangleOnCanvas(
+    verticesNameAndPos,
+    xCentroid,
+    yCentroid,
+    canvasWidth,
+    canvasHeight
   );
   return verticesNameAndPos;
 };
@@ -114,4 +124,20 @@ const findTriangleCentroid = (
   yCentroid = ySum / vertices.length;
   return [xCentroid, yCentroid];
 };
+const centerTriangleOnCanvas = (
+  vertices: TriangleVertices[],
+  xCentroid: number,
+  yCentroid: number,
+  canvasWidth: number,
+  canvasHeight: number
+) => {
+  const xCentroidDiff = canvasWidth / 2 - xCentroid;
+  const yCentroidDiff = canvasHeight / 2 - yCentroid;
+  vertices.forEach((vertex, i) => {
+    const updatedXPosVertex = vertices[i].position[0] + xCentroidDiff;
+    const updatedYPosVertex = vertices[i].position[1] + yCentroidDiff;
+    vertices[i].position = [updatedXPosVertex, updatedYPosVertex];
+  });
+};
+
 export default findTriangleVerticesForCanvas;
