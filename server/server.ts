@@ -1,10 +1,12 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import express, { NextFunction, Request, Response } from "express";
 import path from "path";
+import userRouter from "./routes/user";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+console.log("I AM HERE!");
 // parse body and cookies
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -12,7 +14,10 @@ app.use(express.urlencoded({ extended: true }));
 // serve static files
 app.use(express.static(path.resolve("../web/dist/assets")));
 
-app.get("*", (req, res): void => {
+// routers
+app.use("/api/user", userRouter);
+
+app.get("/", (req, res): void => {
   res.status(200).sendFile(path.resolve("../web/dist/index.html"));
 });
 
