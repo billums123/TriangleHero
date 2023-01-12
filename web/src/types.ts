@@ -35,3 +35,12 @@ export interface TriangleVertices {
   name: string;
   position: [number, number];
 }
+
+export interface GetUserInfo {
+  userId: number;
+  username: string;
+}
+export interface CreateUserOrLogin {
+  username: string;
+  plainPassword: string;
+}

@@ -1,21 +1,28 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState } from "react";
+import { createNewAccount, loginUser } from "../api/users";
 import "../stylesheets/register.css";
+import { CreateUserOrLogin } from "../types";
 import theme from "../theme";
 
 interface RegisterProps {
   type: "login" | "createAccount";
 }
 const Register = ({ type }: RegisterProps) => {
-  const [inputValues, setInputValues] = useState({
+  const [inputValues, setInputValues] = useState<CreateUserOrLogin>({
     username: "",
-    password: "",
+    plainPassword: "",
   });
 
   const handleUpdateInputValues = (e: React.ChangeEvent<HTMLInputElement>) => {
     console.log(e.target.value);
     setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
+
+  const handleSubmitButton = () => {
+    type === "login" ? loginUser(inputValues) : createNewAccount(inputValues);
+  };
+
   let titleAndButton;
   type === "login"
     ? (titleAndButton = "Login")
@@ -34,12 +41,15 @@ const Register = ({ type }: RegisterProps) => {
           onChange={handleUpdateInputValues}
         ></TextField>
         <TextField
-          name="password"
-          value={inputValues.password}
+          name="plainPassword"
+          type="password"
+          value={inputValues.plainPassword}
           label="Password"
           onChange={handleUpdateInputValues}
         ></TextField>
-        <Button variant="contained">{titleAndButton}</Button>
+        <Button variant="contained" onClick={handleSubmitButton}>
+          {titleAndButton}
+        </Button>
       </Box>
     </Box>
   );
