@@ -1,5 +1,5 @@
 import { RequestResponseNext } from "../types";
-import { Request, Response, NextFunction } from "express";
+import db from "../database/dbModel";
 const bcrypt = require("bcryptjs");
 // import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
