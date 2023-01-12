@@ -6,7 +6,7 @@ import {
   TriangleSideLengths,
   ValidateTriangleSidesResponse,
 } from "../types";
-import convertTriangleAnglesToPixels from "../utils/covertTriangleAnglesToPixels";
+import findTriangleVerticesForCanvas from "../utils/findTriangleVerticesForCanvas";
 
 interface TriangleCanvasProps {
   triangleSideLengths: TriangleSideLengths;
@@ -30,20 +30,21 @@ const TriangleCanvas = ({
       const currentCanvasHeight =
         canvasRef.current?.getBoundingClientRect().height;
       // ctx?.fillRect(25, 25, 270, 10);
-      const result = convertTriangleAnglesToPixels(
+      const [vertexOne, vertexTwo, vertexThree] = findTriangleVerticesForCanvas(
         angles,
         triangleSideLengths,
         currentCanvasWidth,
         currentCanvasHeight
       );
+      console.log("result", vertexOne, vertexTwo, vertexThree);
       ctx?.beginPath();
-      ctx?.moveTo(150, 0);
-      ctx?.lineTo(0, 147);
-      ctx?.lineTo(300, 150);
+      ctx?.moveTo(vertexOne.position[0], vertexOne.position[1]);
+      ctx?.lineTo(vertexTwo.position[0], vertexTwo.position[1]);
+      ctx?.lineTo(vertexThree.position[0], vertexThree.position[1]);
+      ctx?.fill();
       if (ctx) {
         ctx.fillStyle = "green";
       }
-      ctx?.fill();
     }
   }, [validTriangle]);
   return (

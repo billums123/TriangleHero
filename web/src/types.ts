@@ -30,3 +30,8 @@ export interface TriangleStatisticsResult {
 
 export interface TriangleTypesResult
   extends Omit<TriangleStatisticsResult, "angles"> {}
+
+export interface TriangleVertices {
+  name: string;
+  position: [number, number] | [];
+}
