@@ -24,18 +24,6 @@ const TriangleCanvas = ({
   const [copyOfTriangleSideLengths, setCopyOfTriangleSideLengths] =
     useState(triangleSideLengths);
 
-  // useEffect(() => {
-  //   if (
-  //     triangleSideLengths.sideA !== copyOfTriangleSideLengths.sideA ||
-  //     triangleSideLengths.sideB !== copyOfTriangleSideLengths.sideB ||
-  //     triangleSideLengths.sideC !== copyOfTriangleSideLengths.sideC
-  //   ) {
-  //     clearRect();
-
-  //     setCopyOfTriangleSideLengths(triangleSideLengths);
-  //   }
-  // }, [triangleSideLengths]);
-
   useEffect(() => {
     if (canvasRef.current) {
       const ctx = canvasRef?.current.getContext("2d");
@@ -54,19 +42,18 @@ const TriangleCanvas = ({
         setCopyOfTriangleSideLengths(triangleSideLengths);
       }
       if (validTriangle.isValid) {
-        const [vertexOne, vertexTwo, vertexThree] =
-          findTriangleVerticesForCanvas(
-            angles,
-            triangleSideLengths,
-            currentCanvasHeight,
-            currentCanvasWidth
-          );
-        console.log("result", vertexOne, vertexTwo, vertexThree);
+        const vertices = findTriangleVerticesForCanvas(
+          angles,
+          triangleSideLengths,
+          currentCanvasHeight,
+          currentCanvasWidth
+        );
         ctx?.clearRect(0, 0, currentCanvasWidth, currentCanvasHeight);
         ctx?.beginPath();
-        ctx?.moveTo(vertexOne.position[0], vertexOne.position[1]);
-        ctx?.lineTo(vertexTwo.position[0], vertexTwo.position[1]);
-        ctx?.lineTo(vertexThree.position[0], vertexThree.position[1]);
+        vertices.forEach((vertex, i) => {
+          if (i === 0) ctx?.moveTo(vertex.position[0], vertex.position[1]);
+          else ctx?.lineTo(vertex.position[0], vertex.position[1]);
+        });
         ctx?.fill();
         if (ctx) {
           ctx.fillStyle = `${theme.palette.primary.main}`;

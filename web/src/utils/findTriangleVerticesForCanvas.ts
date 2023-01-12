@@ -25,7 +25,33 @@ const findTriangleVerticesForCanvas = (
     canvasWidth,
     canvasHeight
   );
+  verifyVerticesAreWithinCanvas(verticesNameAndPos, canvasHeight, canvasWidth);
   return verticesNameAndPos;
+};
+const verifyVerticesAreWithinCanvas = (
+  vertices: TriangleVertices[],
+  canvasHeight: number,
+  canvasWidth: number
+) => {
+  const xPos: number[] = [];
+  const yPos: number[] = [];
+  vertices.forEach((vertex) => {
+    if (vertex.position[0] < 0 || vertex.position[0] > canvasWidth) {
+      xPos.push(vertex.position[0]);
+    }
+    if (vertex.position[1] < 0 || vertex.position[1] > canvasHeight) {
+      yPos.push(vertex.position[1]);
+    }
+  });
+  const scalingFactorX = canvasWidth / Math.max(...xPos);
+  const scalingFactorY = canvasHeight / Math.max(...yPos);
+  const scalingFactor = Math.max(scalingFactorX, scalingFactorY);
+  if (scalingFactor) {
+    vertices.forEach((vertex) => {
+      vertex.position[0] *= scalingFactor;
+      vertex.position[1] *= scalingFactor;
+    });
+  }
 };
 
 const scaleSidesToPixels = (
@@ -35,7 +61,7 @@ const scaleSidesToPixels = (
   const maxSideLength = Math.max(
     ...Object.values(triangleSides).map((side) => parseFloat(side))
   );
-  const scalingFactor = canvasHeight / maxSideLength;
+  let scalingFactor = canvasHeight / maxSideLength;
   const scaledSides: TriangleSideLengthsNums = {
     sideA: 0,
     sideB: 0,
@@ -84,7 +110,6 @@ const calculateTriangleVertices = (
 };
 
 const removeAllButLastLetter = (sideName: string) => {
-  console.log(sideName);
   return `${sideName[sideName.length - 1]}`;
 };
 
