@@ -1,20 +1,17 @@
-import { Pool, QueryResult } from "pg";
+import { Pool } from "pg";
 import * as dotenv from "dotenv";
-
 dotenv.config();
-const { DATABASE_URL } = process.env;
+
+const { DATABASE_URI } = process.env;
 
 const pool = new Pool({
-  connectionString: DATABASE_URL,
+  connectionString: DATABASE_URI,
 });
 
 export default {
-  query: (
-    text: string,
-    params: any,
-    callback: (err: Error, result: QueryResult<any>) => void
-  ) => {
+  query: (text: string, params: any) => {
     console.log("executed query: ", text);
-    return pool.query(text, params, callback);
+    console.log("DATABASEURI: ", DATABASE_URI);
+    return pool.query(text, params);
   },
 };

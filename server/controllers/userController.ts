@@ -1,26 +1,21 @@
 import { RequestResponseNext } from "../types";
 import db from "../database/dbModel";
 const bcrypt = require("bcryptjs");
-// import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 
-// environmental variables
 dotenv.config();
-const { JWT_SECRET } = process.env;
 
-const url =
-  process.env.NODE_ENV === "test"
-    ? process.env.TEST_DATABASE_URL
-    : process.env.DATABASE_URL;
+const { JWT_SECRET } = process.env;
 
 interface UserController {
   registerNewUser: RequestResponseNext;
+  assignJWT: RequestResponseNext;
 }
 
 const userController: UserController = {
   registerNewUser: async (req, res, next) => {
     try {
-      console.log("BODY", req.body);
       const { username, plainPassword } = req.body;
 
       if (!username || !plainPassword) {
@@ -31,8 +26,16 @@ const userController: UserController = {
         });
       }
       const passwordHash = await bcrypt.hash(plainPassword, 10);
-      console.log("PassyPass", plainPassword);
-      console.log("HASHBROWNS", passwordHash);
+      const saveNewUserInfoText =
+        "INSERT INTO users (username, password) VALUES ($1, $2) RETURNING id";
+      const saveNewUserInfoValues = [username, passwordHash];
+      const response = await db.query(
+        saveNewUserInfoText,
+        saveNewUserInfoValues
+      );
+      res.locals.userId = response.rows[0].id;
+      res.locals.username = username;
+      return next();
     } catch (error) {
       return next({
         log: `Error caught in userController.registerNewUser ${error}`,
@@ -40,6 +43,19 @@ const userController: UserController = {
         message: "User already exists!",
       });
     }
+  },
+
+  assignJWT: async (req, res, next) => {
+    const token = jwt.sign(
+      {
+        username: res.locals.username,
+        id: res.locals.userId,
+      },
+      JWT_SECRET as string,
+      { expiresIn: "7d" }
+    );
+    res.cookie("access_token", token, { httpOnly: true });
+    return next();
   },
 };
 

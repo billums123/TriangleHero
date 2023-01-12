@@ -3,13 +3,14 @@ import userController from "../controllers/userController";
 
 const router = express.Router();
 
+router.post("/signup", userController.registerNewUser, (req, res) => {
+  res
+    .status(200)
+    .json({ userId: res.locals.userId, username: res.locals.username });
+});
 // router.post("/login", userController.verifyUser, (req, res) => {
 //   res.status(200).json(res.locals.id);
 // });
-
-router.post("/signup", userController.registerNewUser, (req, res) => {
-  res.status(200).json(res.locals.newUserId);
-});
 
 // router.put("/", (req, res) => {});
 
