@@ -1,4 +1,4 @@
-.form {
+.form-container {
   display: flex;
   height: 60%;
   width: 40%;
@@ -7,4 +7,16 @@
   align-items:center;
   border-radius: 20px;
   box-shadow: 0 4px 25px 0 rgba(0,0,0,0.2);
+}
+.form{
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items:center;
+  /* background-color: red; */
+}
+.back-button{
+  align-self: flex-start;
 }
