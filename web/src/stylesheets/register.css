@@ -1,6 +1,6 @@
 .form-container {
   display: flex;
-  height: 60%;
+  height: 70%;
   width: 40%;
   flex-direction: column;
   justify-content: space-around;
@@ -15,7 +15,6 @@
   flex-direction: column;
   justify-content: space-around;
   align-items:center;
-  /* background-color: red; */
 }
 .back-button{
   align-self: flex-start;
