@@ -33,7 +33,6 @@ const TriangleStats = ({
 }: TriangleStatsProps) => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
-  const [canvasState, setCanvasState] = useState(null);
 
   const handleSaveTriangle = async () => {
     const canvas = canvasRef.current;

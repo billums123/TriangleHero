@@ -35,7 +35,7 @@ export const getTriangles = async () => {
 
 export const deleteTriangle = async (triangleId: number) => {
   try {
-    const response = await axios.delete(`api/triangle${triangleId}`);
+    const response = await axios.delete(`api/triangle/${triangleId}`);
     return response.data;
   } catch (error: any) {
     return error;

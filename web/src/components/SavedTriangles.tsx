@@ -1,12 +1,13 @@
 import { useEffect, useState, useContext } from "react";
-import { Box, Grid, IconButton, Paper } from "@mui/material";
+import { Box, CircularProgress, Grid, IconButton, Paper } from "@mui/material";
 import { Delete as DeleteIcon } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
-import { getTriangles } from "../api/trianglesApi";
+import { deleteTriangle, getTriangles } from "../api/trianglesApi";
 import "../stylesheets/saved-triangles.css";
 import theme from "../theme";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
+import { ListOfTriangles } from "../types";
 
 const Item = styled(Paper)(() => ({
   backgroundColor: theme.palette.secondary.main,
@@ -19,29 +20,38 @@ const Item = styled(Paper)(() => ({
 }));
 const SavedTriangles = () => {
   const { user, setUser } = useContext(UserContext);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   if (!user) navigate("/");
 
-  const [triangles, setTriangles] = useState<any>(null);
+  const [triangles, setTriangles] = useState<ListOfTriangles[] | null>(null);
 
   useEffect(() => {
     (async () => {
       const getTrianglesResponse = await getTriangles();
-      if (getTrianglesResponse) setTriangles(getTrianglesResponse);
+      if (getTrianglesResponse[0].id) setTriangles(getTrianglesResponse);
     })();
   }, []);
 
-  const handleDeleteTriangle = async () => {
-    () => {
-      await deleteTriangle(e.target.id);
-    };
+  setTimeout(() => {
+    setLoading(false);
+  }, 500);
+
+  const handleDeleteTriangle = async (triangleId: number) => {
+    await deleteTriangle(triangleId);
+    if (triangles) {
+      await setTriangles(
+        triangles.filter((triangle) => triangle.id !== triangleId)
+      );
+    }
   };
-  const images = triangles?.map((triangle: any) => (
-    <Grid>
+  const triangleImages = triangles?.map((triangle) => (
+    <Grid key={triangle.id}>
       <IconButton
-        id={triangle.id}
         sx={{ left: "42.5%", top: "15%" }}
-        onClick={handleDeleteTriangle}
+        onClick={() => {
+          handleDeleteTriangle(triangle.id);
+        }}
       >
         <DeleteIcon color="primary" />
       </IconButton>
@@ -49,9 +59,9 @@ const SavedTriangles = () => {
         <img src={triangle.triangle_image} />
         {`${triangle.type_by_angle} ${triangle.type_by_side}`}
         <br></br>
-        {`${triangle.angle_a.toFixed(2)}° | ${triangle.angle_b.toFixed(
-          2
-        )}° | ${triangle.angle_c.toFixed(2)}°`}
+        {`${(triangle.angle_a as number).toFixed(2)}° | ${(
+          triangle.angle_b as number
+        ).toFixed(2)}° | ${(triangle.angle_c as number).toFixed(2)}°`}
       </Item>
     </Grid>
   ));
@@ -61,7 +71,13 @@ const SavedTriangles = () => {
       sx={{ [theme.breakpoints.down("md")]: { minWidth: "95vw" } }}
     >
       <Grid justifyContent="center" container></Grid>
-      {triangles ? <>{images}</> : <>NO TRIANGLES SAVED</>}
+      {triangles ? (
+        <>{triangleImages}</>
+      ) : (
+        <Box className="no-triangles-message">
+          {loading ? <CircularProgress /> : "NO SAVED TRIANGLES"}
+        </Box>
+      )}
     </Box>
   );
 };
