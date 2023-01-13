@@ -11,6 +11,6 @@ To start the dev server and backend server run the following command from the ro
 `npm run dev`
 
 Navigate to the [server/.env](./server/.env) file and update the
-`DATABASE_URI` and `JWT_SECRET` environment variables
+`DATABASE_URI`, `TEST_DATABSE_URI` and `JWT_SECRET` environment variables
 
 \*Note if using your own database, you can create your database tables using the [createDb.sql](./server//database/createDb.sql) file (server/database)
