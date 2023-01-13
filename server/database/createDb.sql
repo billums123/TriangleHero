@@ -11,6 +11,7 @@ CREATE TABLE "triangles" (
   "angle_a" REAL,
   "angle_b" REAL,
   "angle_c" REAL,
+  "triangle_image" BYTEA NOT NULL,
   "user_id" INT NOT NULL
 );
 

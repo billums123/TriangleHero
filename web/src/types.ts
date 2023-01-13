@@ -45,3 +45,13 @@ export interface CreateUserOrLogin {
   plainPassword: string;
   [key: string]: string;
 }
+
+export interface SaveTriangle {
+  type_by_side: string;
+  type_by_angle: string;
+  angle_a: string | number;
+  angle_b: string | number;
+  angle_c: string | number;
+  triangle_image: string;
+  user_id?: number;
+}

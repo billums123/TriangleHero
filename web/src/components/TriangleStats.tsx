@@ -16,7 +16,9 @@ import {
   TriangleStatisticsResult,
   TriangleAngles,
   TriangleTypesResult,
+  SaveTriangle,
 } from "../types";
+import { saveTriangle } from "../api/trianglesApi";
 
 interface TriangleStatsProps {
   validTriangle: ValidateTriangleSidesResponse;
@@ -29,6 +31,18 @@ const TriangleStats = ({
 }: TriangleStatsProps) => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
+
+  const handleSaveTriangle = async () => {
+    const saveTriangleStats: SaveTriangle = {
+      type_by_side: triangleStats.typeBySide,
+      type_by_angle: triangleStats.typeByAngle,
+      angle_a: triangleStats.angles.angleA,
+      angle_b: triangleStats.angles.angleB,
+      angle_c: triangleStats.angles.angleC,
+      triangle_image: "default",
+    };
+    saveTriangle(saveTriangleStats);
+  };
 
   const triangleTypeLabels: TriangleTypesResult = {
     typeBySide: "Type by Side",
@@ -90,6 +104,7 @@ const TriangleStats = ({
               disabled={!validTriangle.isValid}
               variant="contained"
               className="button"
+              onClick={handleSaveTriangle}
             >
               Save Triangle
             </Button>

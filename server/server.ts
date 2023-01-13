@@ -3,6 +3,7 @@ import express, { NextFunction, Request, Response } from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user";
+import triangleRouter from "./routes/triangle";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -17,6 +18,7 @@ app.use(express.static(path.resolve("../web/dist/assets")));
 
 // routers
 app.use("/api/user", userRouter);
+app.use("/api/triangle", triangleRouter);
 
 app.get("/", (req, res): void => {
   res.status(200).sendFile(path.resolve("../web/dist/index.html"));
