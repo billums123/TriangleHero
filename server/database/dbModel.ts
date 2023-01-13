@@ -11,7 +11,6 @@ const pool = new Pool({
 export default {
   query: (text: string, params: any) => {
     console.log("executed query: ", text);
-    console.log("DATABASEURI: ", DATABASE_URI);
     return pool.query(text, params);
   },
 };

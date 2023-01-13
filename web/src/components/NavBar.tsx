@@ -43,7 +43,7 @@ const NavBar = () => {
             color="secondary"
             onClick={() => navigate("/signup")}
           >
-            {user.username}
+            {`${user.username}'s Triangles`}
           </Button>
           <Button className="button" color="secondary" onClick={handleLogout}>
             Logout

@@ -43,4 +43,5 @@ export interface GetUserInfo {
 export interface CreateUserOrLogin {
   username: string;
   plainPassword: string;
+  [key: string]: string;
 }

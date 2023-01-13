@@ -41,3 +41,12 @@ export const logoutUser = async () => {
     return error;
   }
 };
+
+export const checkForUserSession = async () => {
+  try {
+    const response = await axios(`api/user/login`);
+    return response.data;
+  } catch (error: any) {
+    return error;
+  }
+};

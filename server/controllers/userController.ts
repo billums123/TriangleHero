@@ -10,7 +10,9 @@ const { JWT_SECRET } = process.env;
 
 interface UserController {
   registerNewUser: RequestResponseNext;
+  verifyUser: RequestResponseNext;
   assignJWT: RequestResponseNext;
+  verifyJWT: RequestResponseNext;
 }
 
 const userController: UserController = {
@@ -22,7 +24,7 @@ const userController: UserController = {
         return next({
           log: null,
           status: 400,
-          message: "Enter a valid username, email, and/or password",
+          message: "Enter a valid username and/or password",
         });
       }
       const passwordHash = await bcrypt.hash(plainPassword, 10);
@@ -45,6 +47,58 @@ const userController: UserController = {
     }
   },
 
+  verifyUser: async (req, res, next) => {
+    try {
+      const { username, plainPassword } = req.body;
+
+      if (!username || !plainPassword) {
+        return next({
+          log: null,
+          message: "Please enter your username and/or password",
+        });
+      }
+      let userInDatabase;
+      try {
+        const checkIfUsernameExistsText =
+          "SELECT * FROM users WHERE username = $1";
+        const checkIfUsernameExistsValues = [username];
+        userInDatabase = await db.query(
+          checkIfUsernameExistsText,
+          checkIfUsernameExistsValues
+        );
+      } catch {
+        return next({
+          log: null,
+          status: 401,
+          message: "Invalid username or password",
+        });
+      }
+      if (userInDatabase) {
+        const validPassword = await bcrypt.compare(
+          plainPassword,
+          userInDatabase.rows[0].password
+        );
+        if (validPassword) {
+          res.locals.username = userInDatabase.rows[0].username;
+          res.locals.userId = userInDatabase.rows[0].id;
+        } else {
+          return next({
+            log: "null",
+            status: 401,
+            message: "Invalid username and/or password",
+          });
+        }
+      }
+      return next();
+    } catch (error) {
+      return next({
+        log: `Error caught in userController.verifyUser ${error}`,
+        status: 400,
+        message: `Error has occured in userController.verifyUser. ERROR: invalid username and/or password ${error}`,
+      });
+    }
+  },
+
   assignJWT: async (req, res, next) => {
     const token = jwt.sign(
       {
@@ -56,6 +110,25 @@ const userController: UserController = {
     );
     res.cookie("access_token", token, { httpOnly: true });
     return next();
+  },
+
+  verifyJWT: async (req, res, next) => {
+    const token = req.cookies.access_token;
+
+    if (!token) {
+      return next({
+        status: 401,
+        message: "Unauthorized request",
+      });
+    }
+
+    const verified: any = await jwt.verify(token, JWT_SECRET as string);
+    res.locals.userId = verified.id;
+    res.locals.username = verified.username;
+
+    return verified
+      ? next()
+      : next({ status: 403, message: "Unauthorized request" });
   },
 };
 

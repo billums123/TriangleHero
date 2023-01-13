@@ -1,5 +1,6 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { createNewAccount, loginUser } from "../api/usersApi";
 import "../stylesheets/register.css";
 import { CreateUserOrLogin } from "../types";
@@ -10,27 +11,33 @@ interface RegisterProps {
   type: "login" | "createAccount";
 }
 const Register = ({ type }: RegisterProps) => {
-  const [submissionResponse, setSubmissionResponse] = useState<any>(null);
+  const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
+  const [invalidInputs, setInvalidInputs] = useState(false);
   const [inputValues, setInputValues] = useState<CreateUserOrLogin>({
     username: "",
     plainPassword: "",
   });
 
-  // useEffect(() => {
-  //   if (submissionResponse.userId) setInputValues(submissionResponse);
-  // }, [submissionResponse]);
-
   const handleUpdateInputValues = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValues({ ...inputValues, [e.target.name]: e.target.value });
+    if (e.target.value.length < 16) {
+      setInputValues({ ...inputValues, [e.target.name]: e.target.value });
+    }
   };
 
   const handleSubmitButton = async () => {
+    let response;
     if (type === "login") {
-      const loginResponse = await loginUser(inputValues);
-      setUser(loginResponse);
+      response = await loginUser(inputValues);
     } else {
-      setSubmissionResponse(createNewAccount(inputValues));
+      response = await createNewAccount(inputValues);
+    }
+    if (response.userId) {
+      setUser(response);
+      setInvalidInputs(false);
+      navigate("/");
+    } else {
+      setInvalidInputs(true);
     }
   };
   let titleAndButton;
@@ -44,14 +51,21 @@ const Register = ({ type }: RegisterProps) => {
     >
       <Box className="form">
         <Typography variant="h6">{titleAndButton}</Typography>
+        {invalidInputs && (
+          <Typography variant="body2" color="error">
+            Incorrect username and/or password
+          </Typography>
+        )}
         <TextField
           name="username"
+          error={invalidInputs}
           value={inputValues.username}
           label="Username"
           onChange={handleUpdateInputValues}
         ></TextField>
         <TextField
           name="plainPassword"
+          error={invalidInputs}
           type="password"
           value={inputValues.plainPassword}
           label="Password"
