@@ -10,22 +10,24 @@ import findTriangleVerticesForCanvas from "../utils/findTriangleVerticesForCanva
 import theme from "../theme";
 
 interface TriangleCanvasProps {
+  canvasRef: any;
   triangleSideLengths: TriangleSideLengths;
   angles: TriangleAngles;
   validTriangle: ValidateTriangleSidesResponse;
 }
 
 const TriangleCanvas = ({
+  canvasRef,
   triangleSideLengths,
   angles,
   validTriangle,
 }: TriangleCanvasProps) => {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  // const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const [copyOfTriangleSideLengths, setCopyOfTriangleSideLengths] =
     useState(triangleSideLengths);
 
   useEffect(() => {
-    if (canvasRef.current) {
+    if (canvasRef) {
       const ctx = canvasRef?.current.getContext("2d");
       const currentCanvasWidth =
         canvasRef.current?.getBoundingClientRect().width;

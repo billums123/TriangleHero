@@ -1,0 +1,10 @@
+.saved-triangles-container {
+  min-width: 49vw;
+  height: 100%;
+  /* margin: 20% 0 0 0; */
+  border-radius: 20px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start !important;
+  align-items: center;
+}

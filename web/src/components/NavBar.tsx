@@ -41,7 +41,7 @@ const NavBar = () => {
           <Button
             className="button"
             color="secondary"
-            onClick={() => navigate("/signup")}
+            onClick={() => navigate("/triangles")}
           >
             {`${user.username}'s Triangles`}
           </Button>

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { UserContext } from "../App";
 import { useNavigate } from "react-router-dom";
 import {
@@ -21,27 +21,39 @@ import {
 import { saveTriangle } from "../api/trianglesApi";
 
 interface TriangleStatsProps {
+  canvasRef: any;
   validTriangle: ValidateTriangleSidesResponse;
   triangleStats: TriangleStatisticsResult;
 }
 
 const TriangleStats = ({
+  canvasRef,
   validTriangle,
   triangleStats,
 }: TriangleStatsProps) => {
   const navigate = useNavigate();
   const { user, setUser } = useContext(UserContext);
+  const [canvasState, setCanvasState] = useState(null);
 
   const handleSaveTriangle = async () => {
+    const canvas = canvasRef.current;
+    let dataURL = "default";
+    if (canvas) {
+      // save canvas to png file and remove prefix to URL
+      dataURL = await canvas
+        .toDataURL()
+        .replace(/^data:image\/\w+;base64,/, "");
+    }
     const saveTriangleStats: SaveTriangle = {
       type_by_side: triangleStats.typeBySide,
       type_by_angle: triangleStats.typeByAngle,
       angle_a: triangleStats.angles.angleA,
       angle_b: triangleStats.angles.angleB,
       angle_c: triangleStats.angles.angleC,
-      triangle_image: "default",
+      triangle_image: dataURL,
     };
-    saveTriangle(saveTriangleStats);
+    await saveTriangle(saveTriangleStats);
+    navigate("/triangles");
   };
 
   const triangleTypeLabels: TriangleTypesResult = {

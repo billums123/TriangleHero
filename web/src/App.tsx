@@ -9,6 +9,7 @@ import NotFound from "./components/NotFound";
 import Register from "./components/Register";
 import NavBar from "./components/NavBar";
 import { checkForUserSession } from "./api/usersApi";
+import SavedTriangles from "./components/SavedTriangles";
 
 interface UserContextInterface {
   user: GetUserInfo | null;
@@ -32,7 +33,6 @@ const App = () => {
       }
     })();
   }, []);
-  console.log("USER", user);
   return (
     <Box className="app" bgcolor={"primary.main"}>
       <UserContext.Provider value={{ user, setUser }}>
@@ -50,6 +50,7 @@ const App = () => {
                 path="login"
                 element={<Register key="login" type="login" />}
               />
+              <Route path="triangles" element={<SavedTriangles />} />
               <Route path="*" element={<NotFound />} />
             </Route>
           </Routes>

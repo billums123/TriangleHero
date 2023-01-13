@@ -18,7 +18,24 @@ export const saveTriangle = async ({
       angle_c,
       triangle_image,
     });
-    console.log("RESPONSEFRONT", response.data);
+    return response.data;
+  } catch (error: any) {
+    return error;
+  }
+};
+
+export const getTriangles = async () => {
+  try {
+    const response = await axios.get(`api/triangle`);
+    return response.data;
+  } catch (error: any) {
+    return error;
+  }
+};
+
+export const deleteTriangle = async (triangleId: number) => {
+  try {
+    const response = await axios.delete(`api/triangle${triangleId}`);
     return response.data;
   } catch (error: any) {
     return error;
