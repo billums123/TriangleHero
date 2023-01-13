@@ -17,7 +17,7 @@ const findTriangleVerticesForCanvas = (
     angles
   );
   const [xCentroid, yCentroid] = findTriangleCentroid(verticesNameAndPos);
-  //side effect function, updates positions of vertices on verticesNameAndPos object
+
   centerTriangleOnCanvas(
     verticesNameAndPos,
     xCentroid,
@@ -26,6 +26,7 @@ const findTriangleVerticesForCanvas = (
     canvasHeight
   );
   verifyVerticesAreWithinCanvas(verticesNameAndPos, canvasHeight, canvasWidth);
+
   return verticesNameAndPos;
 };
 const verifyVerticesAreWithinCanvas = (
@@ -51,7 +52,9 @@ const verifyVerticesAreWithinCanvas = (
       vertex.position[0] *= scalingFactor;
       vertex.position[1] *= scalingFactor;
     });
+    return true;
   }
+  return false;
 };
 
 const scaleSidesToPixels = (

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Box } from "@mui/material";
 import "../stylesheets/triangle-stats-container.css";
 import theme from "../theme";
@@ -20,6 +20,7 @@ const TriangleStatsContainer = ({
   validTriangle,
   triangleSideLengths,
 }: TriangleStatsContainerProps) => {
+  const canvasRef = useRef<any>(null);
   const [triangleStats, setTriangleStats] = useState<TriangleStatisticsResult>({
     typeBySide: "--",
     typeByAngle: "--",
@@ -57,10 +58,12 @@ const TriangleStatsContainer = ({
       }}
     >
       <TriangleStats
+        canvasRef={canvasRef}
         validTriangle={validTriangle}
         triangleStats={triangleStats}
       />
       <TriangleCanvas
+        canvasRef={canvasRef}
         triangleSideLengths={triangleSideLengths}
         angles={triangleStats.angles}
         validTriangle={validTriangle}

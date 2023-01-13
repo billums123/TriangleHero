@@ -1,3 +1,6 @@
+import { useState, useContext } from "react";
+import { UserContext } from "../App";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Table,
@@ -5,6 +8,7 @@ import {
   TableRow,
   TableCell,
   Typography,
+  Button,
 } from "@mui/material";
 import "../stylesheets/triangle-stats.css";
 import {
@@ -12,17 +16,45 @@ import {
   TriangleStatisticsResult,
   TriangleAngles,
   TriangleTypesResult,
+  SaveTriangle,
 } from "../types";
+import { saveTriangle } from "../api/trianglesApi";
 
 interface TriangleStatsProps {
+  canvasRef: any;
   validTriangle: ValidateTriangleSidesResponse;
   triangleStats: TriangleStatisticsResult;
 }
 
 const TriangleStats = ({
+  canvasRef,
   validTriangle,
   triangleStats,
 }: TriangleStatsProps) => {
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
+
+  const handleSaveTriangle = async () => {
+    const canvas = canvasRef.current;
+    let dataURL = "default";
+    if (canvas) {
+      // save canvas to png file and remove prefix to URL
+      dataURL = await canvas
+        .toDataURL()
+        .replace(/^data:image\/\w+;base64,/, "");
+    }
+    const saveTriangleStats: SaveTriangle = {
+      type_by_side: triangleStats.typeBySide,
+      type_by_angle: triangleStats.typeByAngle,
+      angle_a: triangleStats.angles.angleA,
+      angle_b: triangleStats.angles.angleB,
+      angle_c: triangleStats.angles.angleC,
+      triangle_image: dataURL,
+    };
+    await saveTriangle(saveTriangleStats);
+    navigate("/triangles");
+  };
+
   const triangleTypeLabels: TriangleTypesResult = {
     typeBySide: "Type by Side",
     typeByAngle: "Type by Angle",
@@ -76,6 +108,35 @@ const TriangleStats = ({
           {triangleAnglesRows}
         </TableBody>
       </Table>
+      <Box className="button-box">
+        {user ? (
+          <>
+            <Button
+              disabled={!validTriangle.isValid}
+              variant="contained"
+              className="button"
+              onClick={handleSaveTriangle}
+            >
+              Save Triangle
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              disabled={!validTriangle.isValid}
+              variant="contained"
+              className="button"
+              onClick={() =>
+                navigate("/signup", {
+                  state: "Create an account to save your triangles",
+                })
+              }
+            >
+              Save Triangle
+            </Button>
+          </>
+        )}
+      </Box>
     </Box>
   );
 };
