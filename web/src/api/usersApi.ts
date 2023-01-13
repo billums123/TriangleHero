@@ -10,12 +10,12 @@ export const createNewAccount = async ({
       username,
       plainPassword,
     });
-    console.log(response.data);
     return response.data;
   } catch (error: any) {
     return error;
   }
 };
+
 export const loginUser = async ({
   username,
   plainPassword,
@@ -25,8 +25,18 @@ export const loginUser = async ({
       username,
       plainPassword,
     });
-    console.log(response.data);
     return response.data;
+  } catch (error: any) {
+    return error;
+  }
+};
+
+export const logoutUser = async () => {
+  try {
+    const response = await axios.delete(`api/user/login`);
+    if (response.status === 204) {
+      return true;
+    }
   } catch (error: any) {
     return error;
   }

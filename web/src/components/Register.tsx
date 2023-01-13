@@ -1,28 +1,38 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
-import React, { useState } from "react";
-import { createNewAccount, loginUser } from "../api/users";
+import React, { useState, useContext, useEffect } from "react";
+import { createNewAccount, loginUser } from "../api/usersApi";
 import "../stylesheets/register.css";
 import { CreateUserOrLogin } from "../types";
 import theme from "../theme";
+import { UserContext } from "../App";
 
 interface RegisterProps {
   type: "login" | "createAccount";
 }
 const Register = ({ type }: RegisterProps) => {
+  const [submissionResponse, setSubmissionResponse] = useState<any>(null);
+  const { user, setUser } = useContext(UserContext);
   const [inputValues, setInputValues] = useState<CreateUserOrLogin>({
     username: "",
     plainPassword: "",
   });
 
+  // useEffect(() => {
+  //   if (submissionResponse.userId) setInputValues(submissionResponse);
+  // }, [submissionResponse]);
+
   const handleUpdateInputValues = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     setInputValues({ ...inputValues, [e.target.name]: e.target.value });
   };
 
-  const handleSubmitButton = () => {
-    type === "login" ? loginUser(inputValues) : createNewAccount(inputValues);
+  const handleSubmitButton = async () => {
+    if (type === "login") {
+      const loginResponse = await loginUser(inputValues);
+      setUser(loginResponse);
+    } else {
+      setSubmissionResponse(createNewAccount(inputValues));
+    }
   };
-
   let titleAndButton;
   type === "login"
     ? (titleAndButton = "Login")

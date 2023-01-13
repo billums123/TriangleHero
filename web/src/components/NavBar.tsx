@@ -1,10 +1,24 @@
+import { useContext } from "react";
 import { Box, Button, IconButton } from "@mui/material";
 import { Home as HomeIcon } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import "../stylesheets/nav-bar.css";
 import theme from "../theme";
+import { UserContext } from "../App";
+import { logoutUser } from "../api/usersApi";
+
 const NavBar = () => {
   const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
+
+  const handleLogout = async () => {
+    const loggedOut = await logoutUser();
+    if (loggedOut) {
+      setUser(null);
+      navigate("/");
+    }
+  };
+
   return (
     <Box
       className="nav-bar"
@@ -22,20 +36,37 @@ const NavBar = () => {
         }
         onClick={() => navigate("/")}
       />
-      <Button
-        className="button"
-        color="secondary"
-        onClick={() => navigate("/signup")}
-      >
-        Create Account
-      </Button>
-      <Button
-        className="button"
-        color="secondary"
-        onClick={() => navigate("/login")}
-      >
-        Login
-      </Button>
+      {user ? (
+        <>
+          <Button
+            className="button"
+            color="secondary"
+            onClick={() => navigate("/signup")}
+          >
+            {user.username}
+          </Button>
+          <Button className="button" color="secondary" onClick={handleLogout}>
+            Logout
+          </Button>
+        </>
+      ) : (
+        <>
+          <Button
+            className="button"
+            color="secondary"
+            onClick={() => navigate("/signup")}
+          >
+            Create Account
+          </Button>
+          <Button
+            className="button"
+            color="secondary"
+            onClick={() => navigate("/login")}
+          >
+            Login
+          </Button>
+        </>
+      )}
     </Box>
   );
 };
