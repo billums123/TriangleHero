@@ -1,3 +1,6 @@
+import { useContext } from "react";
+import { UserContext } from "../App";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Table,
@@ -5,6 +8,7 @@ import {
   TableRow,
   TableCell,
   Typography,
+  Button,
 } from "@mui/material";
 import "../stylesheets/triangle-stats.css";
 import {
@@ -23,6 +27,9 @@ const TriangleStats = ({
   validTriangle,
   triangleStats,
 }: TriangleStatsProps) => {
+  const navigate = useNavigate();
+  const { user, setUser } = useContext(UserContext);
+
   const triangleTypeLabels: TriangleTypesResult = {
     typeBySide: "Type by Side",
     typeByAngle: "Type by Angle",
@@ -76,6 +83,34 @@ const TriangleStats = ({
           {triangleAnglesRows}
         </TableBody>
       </Table>
+      <Box className="button-box">
+        {user ? (
+          <>
+            <Button
+              disabled={!validTriangle.isValid}
+              variant="contained"
+              className="button"
+            >
+              Save Triangle
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              disabled={!validTriangle.isValid}
+              variant="contained"
+              className="button"
+              onClick={() =>
+                navigate("/signup", {
+                  state: "Create an account to save your triangles",
+                })
+              }
+            >
+              Save Triangle
+            </Button>
+          </>
+        )}
+      </Box>
     </Box>
   );
 };

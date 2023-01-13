@@ -1,6 +1,6 @@
 import { Box, Button, TextField, Typography } from "@mui/material";
 import React, { useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { createNewAccount, loginUser } from "../api/usersApi";
 import "../stylesheets/register.css";
 import { CreateUserOrLogin } from "../types";
@@ -12,6 +12,7 @@ interface RegisterProps {
 }
 const Register = ({ type }: RegisterProps) => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, setUser } = useContext(UserContext);
   const [invalidInputs, setInvalidInputs] = useState(false);
   const [inputValues, setInputValues] = useState<CreateUserOrLogin>({
@@ -51,6 +52,7 @@ const Register = ({ type }: RegisterProps) => {
     >
       <Box className="form">
         <Typography variant="h6">{titleAndButton}</Typography>
+        <strong>{location.state}</strong>
         {invalidInputs && (
           <Typography variant="body2" color="error">
             Incorrect username and/or password

@@ -17,7 +17,13 @@ const findTriangleVerticesForCanvas = (
     angles
   );
   const [xCentroid, yCentroid] = findTriangleCentroid(verticesNameAndPos);
+
+  // let rescaleAndRepositionTriangle = true;
+  // let count = 1;
+  // while (rescaleAndRepositionTriangle && count < 5) {
+  //   if (count > 50) break;
   //side effect function, updates positions of vertices on verticesNameAndPos object
+  // console.log("here", count);
   centerTriangleOnCanvas(
     verticesNameAndPos,
     xCentroid,
@@ -26,6 +32,8 @@ const findTriangleVerticesForCanvas = (
     canvasHeight
   );
   verifyVerticesAreWithinCanvas(verticesNameAndPos, canvasHeight, canvasWidth);
+  //   count++;
+  // }
   return verticesNameAndPos;
 };
 const verifyVerticesAreWithinCanvas = (
@@ -51,7 +59,9 @@ const verifyVerticesAreWithinCanvas = (
       vertex.position[0] *= scalingFactor;
       vertex.position[1] *= scalingFactor;
     });
+    return true;
   }
+  return false;
 };
 
 const scaleSidesToPixels = (
