@@ -1,0 +1,10 @@
+.container {
+  width: 50vw;
+  height: 70vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  overflow-y: auto;
+  border-radius: 20px;
+}

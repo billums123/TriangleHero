@@ -1,0 +1,11 @@
+{
+  "name": "triangle-hero",
+  "version": "1.0.0",
+  "scripts": {
+    "install-all-deps": "concurrently \"cd web && npm install\" \"cd server && npm install\"",
+    "dev": "concurrently \"cd web && npm run dev\" \"cd server && npm run dev\""
+  },
+  "dependencies": {
+    "concurrently": "^7.6.0"
+  }
+}

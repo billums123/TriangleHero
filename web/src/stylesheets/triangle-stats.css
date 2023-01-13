@@ -1,0 +1,18 @@
+.triangle-stats-list {
+  flex: 1;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  text-align: start;
+  margin-left: 2.5%;
+  overflow: auto;
+}
+.button-box{
+  /* width: 50%; */
+  margin-top: 2%;
+  display: flex;
+  justify-content: center;
+}
+.button {
+  flex: .5
+}
