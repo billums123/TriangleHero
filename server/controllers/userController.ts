@@ -73,7 +73,8 @@ const userController: UserController = {
           message: "Invalid username or password",
         });
       }
-      if (userInDatabase) {
+
+      if (userInDatabase.rows[0]) {
         const validPassword = await bcrypt.compare(
           plainPassword,
           userInDatabase.rows[0].password
@@ -88,6 +89,12 @@ const userController: UserController = {
             message: "Invalid username and/or password",
           });
         }
+      } else {
+        return next({
+          log: "null",
+          status: 401,
+          message: "Invalid username and/or password",
+        });
       }
       return next();
     } catch (error) {
