@@ -20,6 +20,8 @@ const TriangleStatsContainer = ({
   validTriangle,
   triangleSideLengths,
 }: TriangleStatsContainerProps) => {
+  
+  //create a reference to the <canvas> element to use within the TriangleCanvas component
   const canvasRef = useRef<any>(null);
   const [triangleStats, setTriangleStats] = useState<TriangleStatisticsResult>({
     typeBySide: "--",
