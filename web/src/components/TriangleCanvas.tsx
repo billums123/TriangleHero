@@ -22,7 +22,7 @@ const TriangleCanvas = ({
   angles,
   validTriangle,
 }: TriangleCanvasProps) => {
-  // const canvasRef = useRef<HTMLCanvasElement | null>(null);
+
   const [copyOfTriangleSideLengths, setCopyOfTriangleSideLengths] =
     useState(triangleSideLengths);
 
