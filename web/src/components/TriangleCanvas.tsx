@@ -44,18 +44,26 @@ const TriangleCanvas = ({
         setCopyOfTriangleSideLengths(triangleSideLengths);
       }
       if (validTriangle.isValid) {
+        // calculate triangle vertices positions on canvas
         const vertices = findTriangleVerticesForCanvas(
           angles,
           triangleSideLengths,
           currentCanvasHeight,
           currentCanvasWidth
         );
+        //clear canvas
         ctx?.clearRect(0, 0, currentCanvasWidth, currentCanvasHeight);
+        
+        //begin drawing on canvas
         ctx?.beginPath();
+        
+        //draw the triangle on the canvas using the 3 calculated vertices
         vertices.forEach((vertex, i) => {
           if (i === 0) ctx?.moveTo(vertex.position[0], vertex.position[1]);
           else ctx?.lineTo(vertex.position[0], vertex.position[1]);
         });
+        
+        //fill the triangle
         ctx?.fill();
         if (ctx) {
           ctx.fillStyle = `${theme.palette.primary.main}`;
