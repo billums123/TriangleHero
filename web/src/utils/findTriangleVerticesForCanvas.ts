@@ -11,13 +11,16 @@ const findTriangleVerticesForCanvas = (
   canvasHeight: number,
   canvasWidth: number
 ) => {
+  //convert triangle side lengths to pixel value
   const sideLengthsInPixels = scaleSidesToPixels(triangleSides, canvasHeight);
+  //calculate vertices location
   const verticesNameAndPos = calculateTriangleVertices(
     sideLengthsInPixels,
     angles
   );
+  //calculate centroid for triangle
   const [xCentroid, yCentroid] = findTriangleCentroid(verticesNameAndPos);
-
+  //center triangle with provided centroid coordinates
   centerTriangleOnCanvas(
     verticesNameAndPos,
     xCentroid,
@@ -25,6 +28,7 @@ const findTriangleVerticesForCanvas = (
     canvasWidth,
     canvasHeight
   );
+  //verify repositioned triangle is within canvas, if not, rescale
   verifyVerticesAreWithinCanvas(verticesNameAndPos, canvasHeight, canvasWidth);
 
   return verticesNameAndPos;
